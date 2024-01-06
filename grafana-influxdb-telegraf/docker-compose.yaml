@@ -13,6 +13,8 @@ services:
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf
     restart: unless-stopped
+    environment:
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
   influxdb:
     image: "influxdb:2.7.4"
     container_name: influxdb
@@ -21,8 +23,6 @@ services:
     volumes:
       - influxdb:/var/lib/influxdb2
     restart: unless-stopped
-    environment:
-      - INFLUX_TOKEN=${INFLUX_TOKEN}
   grafana:
     image: "grafana/grafana:10.2.3"
     container_name: grafana
