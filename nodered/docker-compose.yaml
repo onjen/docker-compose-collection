@@ -2,10 +2,18 @@ services:
   nodered:
     container_name: nodered
     image: "nodered/node-red:3.1.3"
+    command: -p 80
     volumes:
       - node_red_data:/data
     restart: unless-stopped
-    ports:
-      - 1880:1880
+    network_mode: service:tailscale
+  tailscale:
+    image: "tailscale/tailscale"
+    hostname: node-red
+    volumes:
+      - ./tailscale/var/run/tailscale:/var/run/tailscale
+    environment:
+      - TS_USERSPACE=true
+      - TS_STATE_DIR=/var/run/tailscale
 volumes:
   node_red_data: {}
